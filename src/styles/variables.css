@@ -1,0 +1,104 @@
+:root {
+  /* Core Cosmic Color Palette */
+  --bg-deep: #05060f;
+  --bg-space: #090a1a;
+  --bg-card: rgba(14, 17, 38, 0.75);
+  --bg-card-hover: rgba(22, 26, 56, 0.85);
+  --bg-glass: rgba(15, 18, 42, 0.6);
+  --bg-glass-heavy: rgba(10, 12, 28, 0.88);
+  --bg-glass-light: rgba(255, 255, 255, 0.05);
+
+  /* Neon Glowing Accents */
+  --neon-cyan: #06b6d4;
+  --neon-cyan-glow: rgba(6, 182, 212, 0.4);
+  --neon-purple: #a855f7;
+  --neon-purple-glow: rgba(168, 85, 247, 0.4);
+  --neon-pink: #ec4899;
+  --neon-pink-glow: rgba(236, 72, 153, 0.4);
+  --neon-blue: #3b82f6;
+  --neon-blue-glow: rgba(59, 130, 246, 0.4);
+  --neon-gold: #f59e0b;
+  --neon-gold-glow: rgba(245, 158, 11, 0.4);
+  --neon-emerald: #10b981;
+
+  /* Active Theme Accent (Default: Cosmic Moon Violet & Cyan) */
+  --theme-accent: #06b6d4;
+  --theme-accent-glow: rgba(6, 182, 212, 0.45);
+  --theme-secondary: #a855f7;
+  --theme-gradient: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+  --theme-gradient-reverse: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+
+  /* Text & Surface Tokens */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-glow: rgba(255, 255, 255, 0.85);
+
+  /* Border & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-neon: rgba(6, 182, 212, 0.35);
+  --border-glass: rgba(255, 255, 255, 0.12);
+
+  /* Elevations & Glows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow-cyan: 0 0 25px rgba(6, 182, 212, 0.35);
+  --shadow-glow-purple: 0 0 30px rgba(168, 85, 247, 0.35);
+  --shadow-glow-pink: 0 0 25px rgba(236, 72, 153, 0.35);
+
+  /* Typography */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions & Animation Physics */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Header & Navigation */
+  --nav-height: 76px;
+  --container-max: 1380px;
+}
+
+[data-theme-accent="purple"] {
+  --theme-accent: #a855f7;
+  --theme-accent-glow: rgba(168, 85, 247, 0.5);
+  --theme-secondary: #ec4899;
+  --theme-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  --border-neon: rgba(168, 85, 247, 0.4);
+}
+
+[data-theme-accent="cyan"] {
+  --theme-accent: #06b6d4;
+  --theme-accent-glow: rgba(6, 182, 212, 0.5);
+  --theme-secondary: #3b82f6;
+  --theme-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --border-neon: rgba(6, 182, 212, 0.4);
+}
+
+[data-theme-accent="pink"] {
+  --theme-accent: #ec4899;
+  --theme-accent-glow: rgba(236, 72, 153, 0.5);
+  --theme-secondary: #f43f5e;
+  --theme-gradient: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+  --border-neon: rgba(236, 72, 153, 0.4);
+}
+
+[data-theme-accent="gold"] {
+  --theme-accent: #f59e0b;
+  --theme-accent-glow: rgba(245, 158, 11, 0.5);
+  --theme-secondary: #ef4444;
+  --theme-gradient: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  --border-neon: rgba(245, 158, 11, 0.4);
+}

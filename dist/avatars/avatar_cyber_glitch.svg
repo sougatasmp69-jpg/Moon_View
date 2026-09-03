@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="cyber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="#060814" stroke="#ec4899" stroke-width="3"/>
+  <circle cx="50" cy="40" r="20" fill="#1e112a"/>
+  <!-- Cyber visor -->
+  <rect x="30" y="32" width="40" height="12" rx="4" fill="#06b6d4" opacity="0.85"/>
+  <line x1="32" y1="38" x2="68" y2="38" stroke="#ffffff" stroke-width="1.5"/>
+  <path d="M 22 86 C 24 64 36 58 50 58 C 64 58 76 64 78 86 Z" fill="url(#cyber-grad)" />
+  <polygon points="50,15 54,26 66,26 56,33 60,45 50,38 40,45 44,33 34,26 46,26" fill="#ec4899" opacity="0.7"/>
+</svg>

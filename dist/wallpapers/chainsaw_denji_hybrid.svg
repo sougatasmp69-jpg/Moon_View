@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bg-chainsaw" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1917" />
+      <stop offset="50%" stop-color="#070814" />
+      <stop offset="100%" stop-color="#030308" />
+    </linearGradient>
+    <radialGradient id="moon-chainsaw" cx="65%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#fdba74" stop-opacity="1" />
+      <stop offset="70%" stop-color="#f97316" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#c2410c" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="aura-chainsaw" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#c2410c" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow-chainsaw">
+      <feGaussianBlur stdDeviation="20" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Deep space background -->
+  <rect width="1920" height="1080" fill="url(#bg-chainsaw)" />
+
+  <!-- Stars -->
+  <circle cx="576" cy="160" r="0.7" fill="#ffffff" opacity="0.79" />
+  <circle cx="796" cy="321" r="1.2" fill="#ffffff" opacity="0.50" />
+  <circle cx="1742" cy="850" r="1.0" fill="#ffffff" opacity="0.42" />
+  <circle cx="926" cy="447" r="1.2" fill="#ffffff" opacity="0.99" />
+  <circle cx="1200" cy="874" r="1.0" fill="#ffffff" opacity="0.63" />
+  <circle cx="806" cy="101" r="2.4" fill="#ffffff" opacity="0.45" />
+  <circle cx="1750" cy="755" r="2.3" fill="#ffffff" opacity="0.83" />
+  <circle cx="1907" cy="229" r="1.6" fill="#ffffff" opacity="0.52" />
+  <circle cx="951" cy="624" r="1.3" fill="#ffffff" opacity="0.63" />
+  <circle cx="1881" cy="395" r="1.2" fill="#ffffff" opacity="0.78" />
+  <circle cx="999" cy="36" r="1.0" fill="#ffffff" opacity="0.52" />
+  <circle cx="1179" cy="494" r="0.5" fill="#ffffff" opacity="0.76" />
+  <circle cx="230" cy="363" r="1.3" fill="#ffffff" opacity="0.41" />
+  <circle cx="590" cy="449" r="1.3" fill="#ffffff" opacity="0.64" />
+  <circle cx="1442" cy="308" r="2.2" fill="#ffffff" opacity="0.34" />
+  <circle cx="1475" cy="44" r="1.4" fill="#ffffff" opacity="0.33" />
+  <circle cx="788" cy="160" r="1.9" fill="#ffffff" opacity="0.51" />
+  <circle cx="27" cy="176" r="2.4" fill="#ffffff" opacity="0.97" />
+  <circle cx="1308" cy="241" r="1.4" fill="#ffffff" opacity="0.54" />
+  <circle cx="662" cy="840" r="1.9" fill="#ffffff" opacity="0.93" />
+  <circle cx="1483" cy="1004" r="1.6" fill="#ffffff" opacity="0.96" />
+  <circle cx="586" cy="1054" r="1.6" fill="#ffffff" opacity="0.82" />
+  <circle cx="1154" cy="435" r="2.0" fill="#ffffff" opacity="0.37" />
+  <circle cx="1633" cy="736" r="0.6" fill="#ffffff" opacity="0.37" />
+  <circle cx="919" cy="30" r="1.1" fill="#ffffff" opacity="0.94" />
+  <circle cx="1237" cy="10" r="1.3" fill="#ffffff" opacity="0.73" />
+  <circle cx="1105" cy="672" r="0.7" fill="#ffffff" opacity="0.43" />
+  <circle cx="583" cy="1004" r="1.5" fill="#ffffff" opacity="0.87" />
+  <circle cx="1798" cy="1026" r="1.3" fill="#ffffff" opacity="0.58" />
+  <circle cx="94" cy="502" r="2.1" fill="#ffffff" opacity="0.67" />
+  <circle cx="1111" cy="270" r="0.9" fill="#ffffff" opacity="0.99" />
+  <circle cx="1300" cy="1036" r="0.7" fill="#ffffff" opacity="0.61" />
+  <circle cx="1562" cy="26" r="2.1" fill="#ffffff" opacity="0.81" />
+  <circle cx="1007" cy="170" r="1.2" fill="#ffffff" opacity="0.39" />
+  <circle cx="1212" cy="573" r="1.1" fill="#ffffff" opacity="0.45" />
+  <circle cx="1707" cy="418" r="2.0" fill="#ffffff" opacity="0.32" />
+  <circle cx="569" cy="383" r="0.8" fill="#ffffff" opacity="0.64" />
+  <circle cx="810" cy="471" r="0.8" fill="#ffffff" opacity="0.71" />
+  <circle cx="703" cy="1032" r="0.5" fill="#ffffff" opacity="0.35" />
+  <circle cx="1309" cy="176" r="2.3" fill="#ffffff" opacity="0.98" />
+  <circle cx="1024" cy="618" r="1.9" fill="#ffffff" opacity="0.47" />
+  <circle cx="1340" cy="67" r="0.9" fill="#ffffff" opacity="0.50" />
+  <circle cx="1843" cy="889" r="2.5" fill="#ffffff" opacity="0.98" />
+  <circle cx="252" cy="280" r="1.0" fill="#ffffff" opacity="0.56" />
+  <circle cx="275" cy="1016" r="1.6" fill="#ffffff" opacity="0.64" />
+  <circle cx="111" cy="547" r="1.5" fill="#ffffff" opacity="0.98" />
+  <circle cx="1428" cy="690" r="1.5" fill="#ffffff" opacity="0.95" />
+  <circle cx="388" cy="908" r="2.5" fill="#ffffff" opacity="0.53" />
+  <circle cx="997" cy="411" r="1.5" fill="#ffffff" opacity="0.46" />
+  <circle cx="1420" cy="356" r="1.7" fill="#ffffff" opacity="0.97" />
+  <circle cx="229" cy="994" r="2.4" fill="#ffffff" opacity="0.60" />
+  <circle cx="761" cy="505" r="1.4" fill="#ffffff" opacity="0.44" />
+  <circle cx="270" cy="1042" r="1.4" fill="#ffffff" opacity="0.38" />
+  <circle cx="358" cy="433" r="2.2" fill="#ffffff" opacity="0.53" />
+  <circle cx="1170" cy="1031" r="1.1" fill="#ffffff" opacity="0.76" />
+  <circle cx="362" cy="544" r="1.2" fill="#ffffff" opacity="0.99" />
+  <circle cx="48" cy="38" r="1.3" fill="#ffffff" opacity="0.73" />
+  <circle cx="638" cy="63" r="1.1" fill="#ffffff" opacity="0.41" />
+  <circle cx="1854" cy="793" r="2.4" fill="#ffffff" opacity="0.74" />
+  <circle cx="627" cy="223" r="2.1" fill="#ffffff" opacity="0.92" />
+
+  <!-- Cosmic Moon -->
+  <circle cx="1280" cy="380" r="280" fill="url(#moon-chainsaw)" />
+  <circle cx="1280" cy="380" r="320" fill="none" stroke="#f97316" stroke-width="2" opacity="0.4" stroke-dasharray="15 8" />
+  <circle cx="1280" cy="380" r="380" fill="none" stroke="#c2410c" stroke-width="1" opacity="0.2" />
+
+  <!-- Aura Glow Center -->
+  <circle cx="960" cy="640" r="500" fill="url(#aura-chainsaw)" />
+
+  <!-- Dynamic Geometry / Anime Silhouettes -->
+  <path d="M 300 1080 L 700 450 L 960 700 L 1300 380 L 1680 1080 Z" fill="#0b0d1e" opacity="0.8" />
+  <path d="M 450 1080 L 780 560 L 1100 800 L 1450 490 L 1800 1080 Z" fill="#111427" opacity="0.6" />
+
+  <!-- Energy Rings & Swirls -->
+  <ellipse cx="960" cy="620" rx="600" ry="140" fill="none" stroke="#f97316" stroke-width="6" opacity="0.6" filter="url(#glow-chainsaw)" transform="rotate(-15 960 620)" />
+  <ellipse cx="960" cy="620" rx="680" ry="160" fill="none" stroke="#c2410c" stroke-width="3" opacity="0.4" transform="rotate(25 960 620)" />
+
+  <!-- Holographic Grid Base -->
+  <line x1="0" y1="920" x2="1920" y2="920" stroke="#f97316" stroke-width="1.5" opacity="0.3" />
+  <line x1="0" y1="980" x2="1920" y2="980" stroke="#f97316" stroke-width="1.5" opacity="0.2" />
+  <line x1="0" y1="1040" x2="1920" y2="1040" stroke="#f97316" stroke-width="1.5" opacity="0.1" />
+
+  <!-- Anime Typography & Watermark Stamp -->
+  <g transform="translate(120, 320)">
+    <text x="0" y="0" font-family="'Outfit', 'Impact', sans-serif" font-size="28" font-weight="800" fill="#f97316" letter-spacing="8" opacity="0.9">CHAINSAW MAN</text>
+    <text x="0" y="80" font-family="'Outfit', sans-serif" font-size="82" font-weight="900" fill="#ffffff" letter-spacing="4">CHAINSAW DEVIL</text>
+    <rect x="0" y="110" width="120" height="4" fill="#f97316" />
+    <text x="0" y="145" font-family="'JetBrains Mono', monospace" font-size="20" fill="#94a3b8" letter-spacing="3">MOON_VIEW 3D CINEMATIC MASTER // 8K HDR</text>
+  </g>
+
+  <!-- 3D Badge Indicator -->
+  <g transform="translate(1620, 100)">
+    <rect x="0" y="0" width="180" height="50" rx="25" fill="#090b1a" stroke="#f97316" stroke-width="2" />
+    <text x="90" y="32" font-family="'Outfit', sans-serif" font-size="18" font-weight="800" fill="#f97316" text-anchor="middle" letter-spacing="2">★ 3D LIVE</text>
+  </g>
+</svg>
