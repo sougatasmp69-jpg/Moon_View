@@ -4,6 +4,7 @@ import { initCardTilt } from '../components/CardTilt.js';
 import { soundEffects } from '../services/audio.js';
 import { downloadWallpaper } from '../services/downloader.js';
 import { showToast } from '../components/Toast.js';
+import { getAssetUrl } from '../utils/assets.js';
 
 export class HomeView {
   constructor(container) {
@@ -172,7 +173,7 @@ export class HomeView {
           <div class="container">
             <div class="depth-stage-box">
               <div class="depth-viewport" id="interactive-depth-stage">
-                <img src="/wallpapers/lucy_cyberpunk_moon.jpg" class="depth-layer" id="depth-bg" alt="Depth Preview" />
+                <img src="${getAssetUrl('/wallpapers/lucy_cyberpunk_moon.jpg')}" class="depth-layer" id="depth-bg" alt="Depth Preview" />
                 <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 30%, rgba(5,6,15,0.7) 100%); pointer-events: none;"></div>
                 <div style="position: absolute; bottom: 1.25rem; left: 1.25rem; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-neon); font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">
                   ✦ Move Cursor to Test 3D Parallax Gyro

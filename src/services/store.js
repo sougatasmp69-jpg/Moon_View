@@ -1,4 +1,5 @@
 import { WALLPAPERS } from '../data/wallpapers.js';
+import { getAssetUrl } from '../utils/assets.js';
 
 class AppStore {
   constructor() {
@@ -18,7 +19,7 @@ class AppStore {
         id: 'otaku_celestial_01',
         username: 'CosmicOtaku',
         email: 'collector@moonview.io',
-        avatar: '/avatars/avatar_cosmic_hero.svg',
+        avatar: getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
         rank: 'Celestial Pioneer ★★★',
         joinedDate: 'August 2026',
         downloadQuota: 50,
@@ -33,7 +34,7 @@ class AppStore {
           anime: 'Jujutsu Kaisen',
           resolution: '8K Ultra Master',
           timestamp: '2 hours ago',
-          image: '/wallpapers/gojo_infinite_void.jpg'
+          image: getAssetUrl('/wallpapers/gojo_infinite_void.jpg')
         },
         {
           id: 'dl_102',
@@ -42,7 +43,7 @@ class AppStore {
           anime: 'Cyberpunk: Edgerunners',
           resolution: '4K Ultra HD',
           timestamp: 'Yesterday',
-          image: '/wallpapers/lucy_cyberpunk_moon.jpg'
+          image: getAssetUrl('/wallpapers/lucy_cyberpunk_moon.jpg')
         }
       ],
       searchQuery: '',

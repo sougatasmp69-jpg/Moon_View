@@ -1,3 +1,7 @@
+import './styles/variables.css';
+import './styles/main.css';
+import './styles/components.css';
+
 import { CosmicBackground } from './components/CosmicBackground.js';
 import { QuickSearchModal } from './components/QuickSearchModal.js';
 import { Navbar } from './components/Navbar.js';

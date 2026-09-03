@@ -4,6 +4,7 @@ import { soundEffects } from '../services/audio.js';
 import { downloadWallpaper } from '../services/downloader.js';
 import { showToast } from '../components/Toast.js';
 import { initCardTilt } from '../components/CardTilt.js';
+import { getAssetUrl } from '../utils/assets.js';
 
 export class DashboardView {
   constructor(container) {
@@ -178,9 +179,9 @@ export class DashboardView {
 
   renderSettingsTab(user, state) {
     const avatars = [
-      '/avatars/avatar_cosmic_hero.svg',
-      '/avatars/avatar_shadow_ninja.svg',
-      '/avatars/avatar_cyber_glitch.svg'
+      getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
+      getAssetUrl('/avatars/avatar_shadow_ninja.svg'),
+      getAssetUrl('/avatars/avatar_cyber_glitch.svg')
     ];
 
     const themes = [

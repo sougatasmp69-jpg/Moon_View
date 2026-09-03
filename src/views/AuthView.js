@@ -1,6 +1,7 @@
 import { store } from '../services/store.js';
 import { soundEffects } from '../services/audio.js';
 import { showToast } from '../components/Toast.js';
+import { getAssetUrl } from '../utils/assets.js';
 
 export class AuthView {
   constructor(container) {
@@ -189,7 +190,7 @@ export class AuthView {
           id: 'user_' + Date.now(),
           username: email.split('@')[0] || 'CelestialExplorer',
           email: email.includes('@') ? email : `${email}@moonview.io`,
-          avatar: '/avatars/avatar_cosmic_hero.svg',
+          avatar: getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
           rank: 'Star Vanguard ★★',
           joinedDate: 'September 2026',
           downloadQuota: 100,
@@ -227,7 +228,7 @@ export class AuthView {
           id: 'user_' + Date.now(),
           username: username,
           email: email,
-          avatar: '/avatars/avatar_shadow_ninja.svg',
+          avatar: getAssetUrl('/avatars/avatar_shadow_ninja.svg'),
           rank: 'Celestial Pioneer ★★★',
           joinedDate: 'September 2026',
           downloadQuota: 100,
@@ -244,7 +245,7 @@ export class AuthView {
         id: 'otaku_demo_1',
         username: 'CosmicOtaku',
         email: 'otaku@moonview.io',
-        avatar: '/avatars/avatar_cosmic_hero.svg',
+        avatar: getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
         rank: 'Celestial Pioneer ★★★',
         joinedDate: 'August 2026',
         downloadQuota: 50,
@@ -259,7 +260,7 @@ export class AuthView {
         id: 'vip_demo_2',
         username: 'AstralEmperor',
         email: 'emperor@moonview.io',
-        avatar: '/avatars/avatar_cyber_glitch.svg',
+        avatar: getAssetUrl('/avatars/avatar_cyber_glitch.svg'),
         rank: 'Celestial VIP ★★★★★',
         joinedDate: 'July 2026',
         downloadQuota: 999,
