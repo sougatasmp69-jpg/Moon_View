@@ -1,30 +1,68 @@
 import { WALLPAPERS } from '../data/wallpapers.js';
 import { getAssetUrl } from '../utils/assets.js';
 
+const SEED_USERS = [
+  {
+    id: 'user_otaku_demo',
+    username: 'CosmicOtaku',
+    email: 'otaku@moonview.io',
+    password: 'password123',
+    avatar: getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
+    rank: 'Celestial Pioneer ★★★',
+    joinedDate: 'August 2026',
+    downloadQuota: 100,
+    downloadsUsed: 14
+  },
+  {
+    id: 'user_vip_demo',
+    username: 'AstralEmperor',
+    email: 'emperor@moonview.io',
+    password: 'password123',
+    avatar: getAssetUrl('/avatars/avatar_cyber_glitch.svg'),
+    rank: 'Celestial VIP ★★★★★',
+    joinedDate: 'July 2026',
+    downloadQuota: 999,
+    downloadsUsed: 42
+  },
+  {
+    id: 'user_shadow_demo',
+    username: 'ShadowSovereign',
+    email: 'shadow@moonview.io',
+    password: 'password123',
+    avatar: getAssetUrl('/avatars/avatar_shadow_ninja.svg'),
+    rank: 'Dimension Creator ★★★★',
+    joinedDate: 'September 2026',
+    downloadQuota: 500,
+    downloadsUsed: 28
+  }
+];
+
+const isClient = typeof window !== 'undefined';
+const storage = {
+  getItem: (k) => (isClient && typeof localStorage !== 'undefined' ? localStorage.getItem(k) : null),
+  setItem: (k, v) => { if (isClient && typeof localStorage !== 'undefined') localStorage.setItem(k, v); },
+  removeItem: (k) => { if (isClient && typeof localStorage !== 'undefined') localStorage.removeItem(k); }
+};
+
 class AppStore {
   constructor() {
     this.listeners = new Set();
 
     // Load persisted state from localStorage
-    const savedFavorites = localStorage.getItem('moon_view_favorites');
-    const savedHistory = localStorage.getItem('moon_view_downloads');
-    const savedUser = localStorage.getItem('moon_view_user');
-    const savedTheme = localStorage.getItem('moon_view_theme') || 'cyan';
+    const savedFavorites = storage.getItem('moon_view_favorites');
+    const savedHistory = storage.getItem('moon_view_downloads');
+    const savedUser = storage.getItem('moon_view_user');
+    const savedTheme = storage.getItem('moon_view_theme') || 'cyan';
+    const savedUsersDB = storage.getItem('moon_view_users_db');
+
+    // User accounts database
+    this.usersDB = savedUsersDB ? JSON.parse(savedUsersDB) : [...SEED_USERS];
 
     this.state = {
       currentView: 'home',
       detailWallpaperId: 'gojo-infinite-void',
       authTab: 'login', // 'login' | 'signup'
-      user: savedUser ? JSON.parse(savedUser) : {
-        id: 'otaku_celestial_01',
-        username: 'CosmicOtaku',
-        email: 'collector@moonview.io',
-        avatar: getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
-        rank: 'Celestial Pioneer ★★★',
-        joinedDate: 'August 2026',
-        downloadQuota: 50,
-        downloadsUsed: 14
-      },
+      user: savedUser ? JSON.parse(savedUser) : null,
       favorites: savedFavorites ? JSON.parse(savedFavorites) : ['gojo-infinite-void', 'luffy-gear-5', 'lucy-cyberpunk-moon', 'jinwoo-shadow-monarch'],
       downloadHistory: savedHistory ? JSON.parse(savedHistory) : [
         {
@@ -58,7 +96,9 @@ class AppStore {
     };
 
     // Apply active theme to document root
-    document.documentElement.setAttribute('data-theme-accent', this.state.themeAccent);
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.setAttribute('data-theme-accent', this.state.themeAccent);
+    }
   }
 
   subscribe(listener) {
@@ -74,19 +114,80 @@ class AppStore {
     return this.state;
   }
 
-  navigate(view, wallpaperId = null) {
+  saveUsersDB() {
+    storage.setItem('moon_view_users_db', JSON.stringify(this.usersDB));
+  }
+
+  authenticate(emailOrUsername, password) {
+    const query = emailOrUsername.toLowerCase().trim();
+    const user = this.usersDB.find(
+      (u) => (u.email.toLowerCase() === query || u.username.toLowerCase() === query)
+    );
+
+    if (!user) {
+      return { success: false, error: 'User account not found. Please register or check your credentials.' };
+    }
+
+    if (user.password && user.password !== password) {
+      return { success: false, error: 'Invalid password. Please try again or use Forgot Password.' };
+    }
+
+    return { success: true, user };
+  }
+
+  registerUser(userData) {
+    const existing = this.usersDB.find(
+      (u) => u.email.toLowerCase() === userData.email.toLowerCase().trim() ||
+             u.username.toLowerCase() === userData.username.toLowerCase().trim()
+    );
+
+    if (existing) {
+      return { success: false, error: 'An account with this email or username already exists.' };
+    }
+
+    const newUser = {
+      id: 'user_' + Date.now(),
+      username: userData.username.trim(),
+      email: userData.email.trim(),
+      password: userData.password,
+      avatar: userData.avatar || getAssetUrl('/avatars/avatar_cosmic_hero.svg'),
+      rank: 'Celestial Pioneer ★★★',
+      joinedDate: 'September 2026',
+      downloadQuota: 100,
+      downloadsUsed: 0
+    };
+
+    this.usersDB.push(newUser);
+    this.saveUsersDB();
+    this.login(newUser, true);
+    return { success: true, user: newUser };
+  }
+
+  navigate(view, wallpaperId = null, authTab = null) {
     this.state.currentView = view;
     if (wallpaperId) {
       this.state.detailWallpaperId = wallpaperId;
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (authTab) {
+      this.state.authTab = authTab;
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     this.notify();
   }
 
   openWallpaperDetail(wallpaperId) {
     this.state.detailWallpaperId = wallpaperId;
     this.state.currentView = 'detail';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    this.notify();
+  }
+
+  setAuthTab(tab) {
+    this.state.authTab = tab;
     this.notify();
   }
 
@@ -97,7 +198,7 @@ class AppStore {
     } else {
       this.state.favorites.splice(index, 1);
     }
-    localStorage.setItem('moon_view_favorites', JSON.stringify(this.state.favorites));
+    storage.setItem('moon_view_favorites', JSON.stringify(this.state.favorites));
     this.notify();
     return index === -1; // true if added, false if removed
   }
@@ -119,36 +220,46 @@ class AppStore {
     this.state.downloadHistory.unshift(entry);
     if (this.state.user) {
       this.state.user.downloadsUsed = (this.state.user.downloadsUsed || 0) + 1;
-      localStorage.setItem('moon_view_user', JSON.stringify(this.state.user));
+      storage.setItem('moon_view_user', JSON.stringify(this.state.user));
     }
-    localStorage.setItem('moon_view_downloads', JSON.stringify(this.state.downloadHistory));
+    storage.setItem('moon_view_downloads', JSON.stringify(this.state.downloadHistory));
     this.notify();
   }
 
-  login(userObj) {
+  login(userObj, rememberMe = true) {
     this.state.user = userObj;
-    localStorage.setItem('moon_view_user', JSON.stringify(userObj));
+    if (rememberMe) {
+      storage.setItem('moon_view_user', JSON.stringify(userObj));
+    }
     this.navigate('dashboard');
   }
 
   logout() {
     this.state.user = null;
-    localStorage.removeItem('moon_view_user');
+    storage.removeItem('moon_view_user');
     this.navigate('home');
   }
 
   updateProfile(updates) {
     if (this.state.user) {
       this.state.user = { ...this.state.user, ...updates };
-      localStorage.setItem('moon_view_user', JSON.stringify(this.state.user));
+      // Also update in usersDB if exists
+      const idx = this.usersDB.findIndex((u) => u.id === this.state.user.id);
+      if (idx !== -1) {
+        this.usersDB[idx] = { ...this.usersDB[idx], ...updates };
+        this.saveUsersDB();
+      }
+      storage.setItem('moon_view_user', JSON.stringify(this.state.user));
       this.notify();
     }
   }
 
   setThemeAccent(accent) {
     this.state.themeAccent = accent;
-    localStorage.setItem('moon_view_theme', accent);
-    document.documentElement.setAttribute('data-theme-accent', accent);
+    storage.setItem('moon_view_theme', accent);
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.setAttribute('data-theme-accent', accent);
+    }
     this.notify();
   }
 

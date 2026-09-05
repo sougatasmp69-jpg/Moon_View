@@ -1,11 +1,13 @@
 import { store } from '../services/store.js';
 import { soundEffects } from '../services/audio.js';
+import { showToast } from './Toast.js';
 
 export class Navbar {
   constructor(container, quickSearch) {
     this.container = container;
     this.quickSearch = quickSearch;
     this.mobileOpen = false;
+    this.userMenuOpen = false;
     this.init();
   }
 
@@ -21,6 +23,15 @@ export class Navbar {
         } else {
           nav.classList.remove('scrolled');
         }
+      }
+    });
+
+    // Close user dropdown if clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-user-wrapper') && this.userMenuOpen) {
+        this.userMenuOpen = false;
+        const dropdown = this.container.querySelector('.nav-user-dropdown');
+        if (dropdown) dropdown.classList.remove('open');
       }
     });
   }
@@ -59,10 +70,12 @@ export class Navbar {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
               Best View VIP
             </a></li>
-            <li><a class="nav-link ${currentView === 'dashboard' ? 'active' : ''}" data-nav="${user ? 'dashboard' : 'auth'}">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              ${user ? 'Dashboard' : 'Sign In'}
-            </a></li>
+            ${user ? `
+              <li><a class="nav-link ${currentView === 'dashboard' ? 'active' : ''}" data-nav="dashboard">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Dashboard
+              </a></li>
+            ` : ''}
           </ul>
 
           <!-- Nav Right Actions -->
@@ -92,16 +105,49 @@ export class Navbar {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="${favCount > 0 ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
             </button>
 
-            <!-- User Auth Pill / Button -->
+            <!-- User Auth / Dropdown Menu -->
             ${user ? `
-              <div class="nav-user-pill" data-nav="dashboard" title="Open User Dashboard">
-                <img src="${user.avatar}" class="nav-avatar-img" alt="avatar" />
-                <span class="nav-username-text">${user.username}</span>
+              <div class="nav-user-wrapper">
+                <div class="nav-user-pill" id="btn-nav-user-toggle" title="User Menu">
+                  <img src="${user.avatar}" class="nav-avatar-img" alt="avatar" />
+                  <span class="nav-username-text">${user.username}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+
+                <div class="nav-user-dropdown ${this.userMenuOpen ? 'open' : ''}">
+                  <div class="nav-dropdown-header">
+                    <div class="nav-dropdown-name">${user.username}</div>
+                    <div class="nav-dropdown-email">${user.email}</div>
+                    <div style="margin-top: 0.35rem;"><span class="badge badge-purple" style="font-size: 0.65rem;">${user.rank}</span></div>
+                  </div>
+                  <div class="nav-dropdown-item" data-nav="dashboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>My Dashboard</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-action="nav-user-favs">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    <span>Liked Wallpapers (${favCount})</span>
+                  </div>
+                  <div class="nav-dropdown-item" data-action="nav-user-theme">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                    <span>Switch Theme Glow</span>
+                  </div>
+                  <div style="height: 1px; background: var(--border-subtle); margin: 0.25rem 0;"></div>
+                  <div class="nav-dropdown-item danger" id="btn-nav-logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                  </div>
+                </div>
               </div>
             ` : `
-              <button class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;" data-nav="auth">
-                Sign In
-              </button>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" data-auth-action="login">
+                  Sign In
+                </button>
+                <button class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;" data-auth-action="signup">
+                  Register
+                </button>
+              </div>
             `}
 
             <!-- Mobile Hamburger Toggle -->
@@ -116,7 +162,13 @@ export class Navbar {
           <a class="nav-link" data-nav="home">Home</a>
           <a class="nav-link" data-nav="browse">Browse Gallery</a>
           <a class="nav-link" data-action="scroll-best-view">Best View VIP</a>
-          <a class="nav-link" data-nav="${user ? 'dashboard' : 'auth'}">${user ? 'Dashboard (' + user.username + ')' : 'Sign In / Sign Up'}</a>
+          ${user ? `
+            <a class="nav-link" data-nav="dashboard">Dashboard (${user.username})</a>
+            <a class="nav-link" id="btn-mobile-logout" style="color: #f43f5e;">Sign Out</a>
+          ` : `
+            <a class="nav-link" data-auth-action="login">Sign In</a>
+            <a class="nav-link" data-auth-action="signup">Create Account</a>
+          `}
         </div>
       </header>
     `;
@@ -132,15 +184,68 @@ export class Navbar {
         const targetView = el.getAttribute('data-nav');
         soundEffects.playClick();
         this.mobileOpen = false;
+        this.userMenuOpen = false;
         store.navigate(targetView);
       });
     });
+
+    // Auth direct buttons (login vs signup)
+    this.container.querySelectorAll('[data-auth-action]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = el.getAttribute('data-auth-action');
+        soundEffects.playClick();
+        this.mobileOpen = false;
+        store.navigate('auth', null, tab);
+      });
+    });
+
+    // User dropdown toggle
+    const userToggle = this.container.querySelector('#btn-nav-user-toggle');
+    if (userToggle) {
+      userToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        soundEffects.playClick();
+        this.userMenuOpen = !this.userMenuOpen;
+        const dropdown = this.container.querySelector('.nav-user-dropdown');
+        if (dropdown) dropdown.classList.toggle('open', this.userMenuOpen);
+      });
+    }
+
+    // User dropdown items
+    this.container.querySelector('[data-action="nav-user-favs"]')?.addEventListener('click', () => {
+      soundEffects.playClick();
+      this.userMenuOpen = false;
+      store.navigate('dashboard');
+    });
+
+    this.container.querySelector('[data-action="nav-user-theme"]')?.addEventListener('click', () => {
+      soundEffects.playClick();
+      const currentTheme = store.getState().themeAccent;
+      const themes = ['cyan', 'purple', 'pink', 'gold'];
+      const nextTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+      store.setThemeAccent(nextTheme);
+      showToast(`Neon Theme switched to ${nextTheme.toUpperCase()}`, 'info');
+    });
+
+    // Logout triggers
+    const handleLogout = () => {
+      soundEffects.playClick();
+      this.userMenuOpen = false;
+      this.mobileOpen = false;
+      store.logout();
+      showToast('Signed out of MOON_VIEW', 'info');
+    };
+
+    this.container.querySelector('#btn-nav-logout')?.addEventListener('click', handleLogout);
+    this.container.querySelector('#btn-mobile-logout')?.addEventListener('click', handleLogout);
 
     // Best view scroll
     this.container.querySelectorAll('[data-action="scroll-best-view"]').forEach((el) => {
       el.addEventListener('click', () => {
         soundEffects.playClick();
         this.mobileOpen = false;
+        this.userMenuOpen = false;
         if (store.getState().currentView !== 'home') {
           store.navigate('home');
           setTimeout(() => {

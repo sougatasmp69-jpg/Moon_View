@@ -70,6 +70,10 @@ class App {
     if (hash.startsWith('detail/')) {
       const wallpaperId = hash.replace('detail/', '');
       store.openWallpaperDetail(wallpaperId);
+    } else if (hash === 'login' || hash === 'signin') {
+      store.navigate('auth', null, 'login');
+    } else if (hash === 'signup' || hash === 'register') {
+      store.navigate('auth', null, 'signup');
     } else if (['home', 'browse', 'auth', 'dashboard'].includes(hash)) {
       store.navigate(hash);
     }
@@ -79,6 +83,8 @@ class App {
     let targetHash = state.currentView;
     if (state.currentView === 'detail' && state.detailWallpaperId) {
       targetHash = `detail/${state.detailWallpaperId}`;
+    } else if (state.currentView === 'auth') {
+      targetHash = state.authTab || 'login';
     }
     if (window.location.hash.slice(1) !== targetHash) {
       history.replaceState(null, '', `#${targetHash}`);

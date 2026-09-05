@@ -292,6 +292,16 @@ export class HomeView {
       });
     });
 
+    // Preview button click
+    this.container.querySelectorAll('.btn-preview-card').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        soundEffects.playClick();
+        store.openWallpaperDetail(id);
+      });
+    });
+
     // Like button
     this.container.querySelectorAll('[data-like-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
