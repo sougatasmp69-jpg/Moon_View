@@ -1,0 +1,70 @@
+/* 3D Canvas Grab Cursor States */
+.three-scene-canvas,
+canvas.three-scene-canvas,
+.detail-preview-stage canvas,
+.card-media-wrapper canvas {
+  cursor: grab !important;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: filter 0.2s ease;
+}
+
+.three-scene-canvas:hover,
+canvas.three-scene-canvas:hover {
+  cursor: grab !important;
+}
+
+.three-scene-canvas.is-dragging,
+canvas.three-scene-canvas.is-dragging,
+.three-scene-canvas:active,
+canvas.three-scene-canvas:active {
+  cursor: grabbing !important;
+}
+
+/* Floating Drag Hint Tooltip */
+.drag-hint-tooltip {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 245, 255, 0.2);
+  color: #ffffff;
+  padding: 0.5rem 1.1rem;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: floatHint 2.5s infinite ease-in-out;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.drag-hint-tooltip span {
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.drag-hint-tooltip.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+@keyframes floatHint {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-6px);
+  }
+}

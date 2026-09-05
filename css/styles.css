@@ -1,0 +1,166 @@
+/* ==========================================================================
+   3D Canvas, Drag-Controls & Interactive Hint Styles
+   ========================================================================== */
+
+/* 3D Canvas Grab Cursor States */
+.three-scene-canvas,
+canvas.three-scene-canvas,
+.detail-preview-stage canvas,
+.card-media-wrapper canvas {
+  cursor: grab !important;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: filter 0.2s ease;
+}
+
+.three-scene-canvas:hover,
+canvas.three-scene-canvas:hover {
+  cursor: grab !important;
+}
+
+.three-scene-canvas.is-dragging,
+canvas.three-scene-canvas.is-dragging,
+.three-scene-canvas:active,
+canvas.three-scene-canvas:active {
+  cursor: grabbing !important;
+}
+
+/* Floating Drag Hint Tooltip */
+.drag-hint-tooltip {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 245, 255, 0.2);
+  color: #ffffff;
+  padding: 0.5rem 1.1rem;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: floatHint 2.5s infinite ease-in-out;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.drag-hint-tooltip span {
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.drag-hint-tooltip.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+@keyframes floatHint {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-6px);
+  }
+}
+
+/* Fullscreen 3D Scene Modal */
+.modal-3d-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 15, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-3d-container {
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(0, 245, 255, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 245, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-3d-header {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.modal-3d-header > * {
+  pointer-events: auto;
+}
+
+.modal-3d-stage {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.modal-3d-controls {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  z-index: 30;
+}
+
+.scene-tab-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scene-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scene-tab-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00f5ff 0%, #a855f7 100%);
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.4);
+}

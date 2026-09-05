@@ -4,20 +4,46 @@ import { soundEffects } from '../services/audio.js';
 import { downloadWallpaper } from '../services/downloader.js';
 import { showToast } from '../components/Toast.js';
 import { initCardTilt } from '../components/CardTilt.js';
+import { initScene, openFullscreen3DModal } from '../services/scenes.js';
 
 export class DetailView {
   constructor(container) {
     this.container = container;
     this.selectedResIndex = 0;
     this.is3DActive = true;
+    this.currentSceneInstance = null;
+  }
+
+  getSceneType(wp) {
+    const id = wp.id || '';
+    if (id.includes('gojo') || id.includes('jinwoo') || id.includes('nebula') || id.includes('space')) {
+      return 'nebula';
+    }
+    if (id.includes('tanjiro') || id.includes('ichigo') || id.includes('wave') || id.includes('sukuna')) {
+      return 'waveform';
+    }
+    if (id.includes('lucy') || id.includes('eren') || id.includes('city') || id.includes('cyberpunk')) {
+      return 'cityscape';
+    }
+    if (id.includes('chainsaw') || id.includes('megumi') || id.includes('zenitsu') || id.includes('shape')) {
+      return 'geometric';
+    }
+    return 'moon';
   }
 
   render() {
+    // Dispose previous scene if re-rendering
+    if (this.currentSceneInstance) {
+      this.currentSceneInstance.dispose();
+      this.currentSceneInstance = null;
+    }
+
     const wp = store.getCurrentWallpaper();
     const state = store.getState();
     const isLiked = state.favorites.includes(wp.id);
     const relatedWallpapers = WALLPAPERS.filter((w) => w.animeId === wp.animeId && w.id !== wp.id);
     const fallbackRelated = relatedWallpapers.length > 0 ? relatedWallpapers : WALLPAPERS.filter((w) => w.id !== wp.id).slice(0, 3);
+    const sceneType = this.getSceneType(wp);
 
     this.container.innerHTML = `
       <div class="view-transition-enter detail-view-container">
@@ -32,20 +58,24 @@ export class DetailView {
           <div class="detail-main-layout">
             <!-- Left: Interactive 3D Preview Stage -->
             <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-              <div class="detail-preview-stage" id="detail-stage" data-tilt>
-                <img src="${wp.image}" class="detail-preview-img" id="detail-main-img" alt="${wp.title}" />
+              <div class="detail-preview-stage" id="detail-stage" data-tilt style="position: relative; overflow: hidden; min-height: 440px;">
+                <!-- 2D Artwork Image Layer -->
+                <img src="${wp.image}" class="detail-preview-img" id="detail-main-img" alt="${wp.title}" style="display: ${this.is3DActive ? 'none' : 'block'};" />
+
+                <!-- Live 3D WebGL Canvas Layer -->
+                <div id="detail-3d-mount" style="position: absolute; inset: 0; width: 100%; height: 100%; display: ${this.is3DActive ? 'block' : 'none'}; z-index: 2;"></div>
                 
                 <!-- 3D Live Indicator Overlay -->
-                <div style="position: absolute; top: 1.25rem; left: 1.25rem; z-index: 10;">
-                  <span class="badge badge-live">★ 3D LIVE PARALLAX</span>
+                <div style="position: absolute; top: 1.25rem; left: 1.25rem; z-index: 10; pointer-events: none;">
+                  <span class="badge badge-live">★ 3D ${this.is3DActive ? 'WEBGL LIVE WORLD' : 'PARALLAX ART'}</span>
                 </div>
 
                 <!-- Stage Controls Overlay -->
-                <div style="position: absolute; bottom: 1.25rem; right: 1.25rem; display: flex; gap: 0.6rem; z-index: 10;">
-                  <button class="btn-icon" id="btn-toggle-3d" title="Toggle 3D Parallax Gyro" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);">
+                <div style="position: absolute; bottom: 1.25rem; right: 1.25rem; display: flex; gap: 0.6rem; z-index: 20;">
+                  <button class="btn-icon ${this.is3DActive ? 'active' : ''}" id="btn-toggle-3d" title="Toggle 3D Live World / 2D Artwork" style="background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
                   </button>
-                  <button class="btn-icon" id="btn-fullscreen-preview" title="Open Fullscreen Master" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);">
+                  <button class="btn-icon" id="btn-fullscreen-preview" title="Open Fullscreen 3D Viewer (Esc to exit)" style="background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                   </button>
                 </div>
@@ -142,9 +172,18 @@ export class DetailView {
       </div>
     `;
 
-    this.bindEvents(wp);
+    this.bindEvents(wp, sceneType);
     initCardTilt(this.container);
-    this.initInteractiveStage();
+
+    if (this.is3DActive) {
+      const mount = this.container.querySelector('#detail-3d-mount');
+      if (mount) {
+        this.currentSceneInstance = initScene(sceneType, mount, {
+          showHint: true,
+          hintText: '🖐 Drag to rotate 3D scene'
+        });
+      }
+    }
   }
 
   renderRelatedCard(wp, state) {
@@ -170,11 +209,25 @@ export class DetailView {
     `;
   }
 
-  bindEvents(wp) {
+  bindEvents(wp, sceneType) {
     // Back button
     this.container.querySelector('#btn-detail-back')?.addEventListener('click', () => {
       soundEffects.playClick();
       store.navigate('browse');
+    });
+
+    // Toggle 3D Live / 2D Artwork
+    this.container.querySelector('#btn-toggle-3d')?.addEventListener('click', () => {
+      soundEffects.playClick();
+      this.is3DActive = !this.is3DActive;
+      this.render();
+      showToast(this.is3DActive ? '3D WebGL World Activated' : '2D Artwork Mode Activated', 'info');
+    });
+
+    // Fullscreen 3D Interactive Modal
+    this.container.querySelector('#btn-fullscreen-preview')?.addEventListener('click', () => {
+      soundEffects.playClick();
+      openFullscreen3DModal(sceneType, wp);
     });
 
     // Resolution options
@@ -218,7 +271,7 @@ export class DetailView {
     }
 
     // Like button
-    this.container.querySelector('#btn-detail-like')?.addEventListener('click', (e) => {
+    this.container.querySelector('#btn-detail-like')?.addEventListener('click', () => {
       soundEffects.playHeart();
       const isAdded = store.toggleFavorite(wp.id);
       showToast(isAdded ? `Saved "${wp.title}" to favorites` : 'Removed from favorites', 'info');
@@ -232,19 +285,6 @@ export class DetailView {
       showToast(`Link copied to clipboard! Share the dimension.`, 'success');
     });
 
-    // Fullscreen button
-    this.container.querySelector('#btn-fullscreen-preview')?.addEventListener('click', () => {
-      soundEffects.playClick();
-      const stage = this.container.querySelector('#detail-stage');
-      if (stage) {
-        if (!document.fullscreenElement) {
-          stage.requestFullscreen?.().catch(() => {});
-        } else {
-          document.exitFullscreen?.();
-        }
-      }
-    });
-
     // Related cards click
     this.container.querySelectorAll('.wallpaper-card').forEach((card) => {
       card.addEventListener('click', (e) => {
@@ -253,24 +293,6 @@ export class DetailView {
         soundEffects.playClick();
         store.openWallpaperDetail(id);
       });
-    });
-  }
-
-  initInteractiveStage() {
-    const stage = this.container.querySelector('#detail-stage');
-    const img = this.container.querySelector('#detail-main-img');
-    if (!stage || !img) return;
-
-    stage.addEventListener('mousemove', (e) => {
-      const rect = stage.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-      img.style.transform = `scale(1.06) translate(${x * -18}px, ${y * -18}px)`;
-    });
-
-    stage.addEventListener('mouseleave', () => {
-      img.style.transform = 'scale(1) translate(0px, 0px)';
     });
   }
 }
