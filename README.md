@@ -6,12 +6,14 @@
 
 **Step into another dimension with next-gen 3D parallax depth, glowing celestial moon aesthetics, and ultra-high-definition 8K anime wallpapers.**
 
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Online-00f5ff?style=for-the-badge)](https://sougatasmp69-jpg.github.io/Moon_View/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sougatasmp69-jpg/Moon_View)
 [![Vite](https://img.shields.io/badge/Vite-5.4.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![CSS3](https://img.shields.io/badge/CSS3-Glassmorphism-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
-[✨ Features](#-features) • [🚀 Quick Start](#-quick-start) • [📁 Project Structure](#-project-structure) • [🎨 Wallpaper Roster](#-wallpaper-roster) • [⌨️ Keyboard Shortcuts](#️-keyboard-shortcuts) • [📖 Documentation](#-documentation-folder)
+[🌐 Live Demo](https://sougatasmp69-jpg.github.io/Moon_View/) • [✨ Features](#-features) • [🚀 Quick Start](#-quick-start) • [📁 Project Structure](#-project-structure) • [🎨 Wallpaper Roster](#-wallpaper-roster) • [⌨️ Keyboard Shortcuts](#️-keyboard-shortcuts) • [📖 Documentation](#-documentation-folder)
 
 </div>
 
